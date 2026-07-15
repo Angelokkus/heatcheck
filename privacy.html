@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Heatcheck — Privacy Policy</title>
+    <style>
+      body { max-width: 760px; margin: 40px auto; padding: 0 20px;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        line-height: 1.6; color: #1a1a1a; }
+      h1 { font-size: 26px; }
+      h2 { font-size: 18px; margin-top: 28px; }
+      code { background: #f2f2f4; padding: 1px 5px; border-radius: 4px; }
+      .muted { color: #666; }
+      a { color: #d0491c; }
+    </style>
+  </head>
+  <body>
+    <h1>Privacy Policy — Heatcheck</h1>
+    <p class="muted">Last updated: 2026-07-16</p>
+
+    <p>Heatcheck is a browser extension that shows extended CS2 statistics inside
+    the FACEIT match room. This page explains what it does with your data.</p>
+
+    <h2>Short version</h2>
+    <p><strong>Heatcheck does not collect, store, sell, or transmit any personal
+    data to the developer or any third party. No trackers, no analytics.</strong></p>
+
+    <h2>What data is handled</h2>
+    <ul>
+      <li><strong>Your FACEIT Data API key</strong> — entered by you, stored only
+      in your browser (<code>storage.local</code>). Never sent to the developer;
+      sent only to FACEIT's official API (<code>https://open.faceit.com</code>)
+      to fetch public statistics.</li>
+      <li><strong>Cached API responses</strong> — public stats cached locally to
+      respect rate limits; clearable from the popup.</li>
+      <li><strong>Your settings</strong> — stored locally on your device.</li>
+    </ul>
+
+    <h2>What it does NOT do</h2>
+    <ul>
+      <li>No data sent anywhere except directly from your browser to
+      <code>https://open.faceit.com</code>.</li>
+      <li>No analytics, telemetry, ads, fingerprinting, or third-party trackers.</li>
+      <li>No access to browsing history or credentials.</li>
+    </ul>
+
+    <h2>Permissions</h2>
+    <ul>
+      <li><code>storage</code> — save settings, API key, and cache locally.</li>
+      <li><code>open.faceit.com</code> host access — fetch public CS2 stats.</li>
+      <li>content script on <code>www.faceit.com</code> — show stats in the room.</li>
+    </ul>
+
+    <h2>Data retention</h2>
+    <p>All data stays on your device. Uninstalling or clearing data removes it.</p>
+
+    <h2>Contact</h2>
+    <p><a href="mailto:angelokkus@gmail.com">angelokkus@gmail.com</a></p>
+  </body>
+</html>
