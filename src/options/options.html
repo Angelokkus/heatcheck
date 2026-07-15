@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FACEIT Form Level — настройки</title>
+    <style>
+      :root { color-scheme: dark; }
+      body {
+        margin: 0; padding: 24px;
+        font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+        background: #0f0f14; color: #e6e6ea; font-size: 14px;
+      }
+      .wrap { max-width: 720px; margin: 0 auto; }
+      h1 { font-size: 20px; margin: 0 0 4px; }
+      h2 { font-size: 15px; margin: 24px 0 8px; color: #ff5500; }
+      .sub { color: #9a9aa5; margin: 0 0 16px; font-size: 12px; }
+      .card { background: #16161c; border: 1px solid #2a2a33; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+      label { display: block; margin: 10px 0 4px; font-weight: 600; }
+      input[type="text"], input[type="password"], input[type="number"] {
+        width: 100%; box-sizing: border-box; padding: 8px 10px;
+        background: #0f0f14; color: #e6e6ea; border: 1px solid #33333d; border-radius: 6px; font-size: 14px;
+      }
+      .row { display: flex; gap: 12px; flex-wrap: wrap; }
+      .row > div { flex: 1; min-width: 160px; }
+      button {
+        padding: 8px 14px; border-radius: 6px; border: 1px solid #3a3a45;
+        background: #2a2a33; color: #fff; font-weight: 600; cursor: pointer; font-size: 13px;
+      }
+      button.primary { background: #ff5500; border-color: #ff5500; }
+      button:hover { filter: brightness(1.1); }
+      .btnrow { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+      .status { margin-top: 10px; font-size: 13px; min-height: 18px; }
+      .status.ok { color: #4caf50; }
+      .status.err { color: #ff6b6b; }
+      .thresholds { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .thresholds input { text-align: center; }
+      .toggles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .toggle { display: flex; align-items: center; gap: 8px; font-weight: 500; }
+      .toggle input { width: auto; }
+      code { background: #22222a; padding: 1px 5px; border-radius: 4px; }
+      .hint { color: #9a9aa5; font-size: 12px; margin-top: 4px; }
+      a { color: #ff8a4c; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>FACEIT Form Level</h1>
+      <p class="sub">Расширенная статистика и «уровень формы» в комнате матча. Только официальный FACEIT Data API. Ключ хранится локально.</p>
+
+      <div class="card">
+        <h2>API-ключ</h2>
+        <label for="apiKey">FACEIT Data API key</label>
+        <input id="apiKey" type="password" placeholder="вставьте ключ" autocomplete="off" />
+        <div class="hint">Получить: <a href="https://developers.faceit.com" target="_blank" rel="noopener">developers.faceit.com</a> → создать app → Server-Side API key.</div>
+        <div class="btnrow">
+          <button id="toggleKey" type="button">Показать</button>
+          <button id="checkKey" class="primary" type="button">Проверить ключ</button>
+        </div>
+        <div id="keyStatus" class="status"></div>
+      </div>
+
+      <div class="card">
+        <h2>Встречи (🤝 / ⚔)</h2>
+        <label for="selfNick">Твой ник FACEIT</label>
+        <input id="selfNick" type="text" placeholder="определяется автоматически" autocomplete="off" />
+        <div class="hint">Обычно определяется сам. Заполни вручную, если счётчик встреч не появляется в комнате матча.</div>
+      </div>
+
+      <div class="card">
+        <h2>Кэш</h2>
+        <label for="ttl">TTL кэша (минуты)</label>
+        <input id="ttl" type="number" min="0" step="1" />
+        <div class="hint">Ответы API кэшируются в storage.local, чтобы соблюдать rate limits.</div>
+        <div class="btnrow">
+          <button id="clearCache" type="button">Очистить кэш</button>
+        </div>
+        <div id="cacheStatus" class="status"></div>
+      </div>
+
+      <div class="card">
+        <h2>Параметры Form Level</h2>
+        <p class="sub">Пороги — предварительная калибровка «на глаз». Их нужно подгонять под реальное распределение (см. README).</p>
+        <div class="row">
+          <div>
+            <label for="matchWindow">matchWindow</label>
+            <input id="matchWindow" type="number" min="1" max="100" step="1" />
+          </div>
+          <div>
+            <label for="recencyDecay">recencyDecay</label>
+            <input id="recencyDecay" type="number" min="0" max="1" step="0.01" />
+          </div>
+          <div>
+            <label for="winrateWeight">winrateWeight</label>
+            <input id="winrateWeight" type="number" min="0" max="2" step="0.01" />
+          </div>
+        </div>
+        <label>Пороги уровней (9 значений, по возрастанию)</label>
+        <div id="thresholds" class="thresholds"></div>
+        <div class="hint">Границы между уровнями 1→2, 2→3, … 9→10.</div>
+      </div>
+
+      <div class="card">
+        <h2>Метрики в лобби</h2>
+        <div id="toggles" class="toggles"></div>
+      </div>
+
+      <div class="btnrow">
+        <button id="save" class="primary" type="button">Сохранить</button>
+        <button id="reset" type="button">Сбросить к дефолтам</button>
+        <span id="saveStatus" class="status"></span>
+      </div>
+    </div>
+    <script src="options.js"></script>
+  </body>
+</html>
