@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HeatCheck — расширенная статистика FACEIT (CS2) прямо в лобби</title>
+    <meta
+      name="description"
+      content="HeatCheck — браузерное расширение для FACEIT (CS2): показывает расширенную статистику игроков и авторскую метрику «уровень формы» прямо в комнате матча. Chrome, Firefox, Opera, Yandex."
+    />
+    <meta name="theme-color" content="#0A0A0C" />
+
+    <!-- Open Graph / соцсети -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://angelokkus.github.io/heatcheck/" />
+    <meta property="og:title" content="HeatCheck — статистика FACEIT (CS2) в лобби" />
+    <meta
+      property="og:description"
+      content="Расширенная статистика игроков и «уровень формы» прямо в комнате матча FACEIT. Без трекеров."
+    />
+    <meta property="og:image" content="https://angelokkus.github.io/heatcheck/assets/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Фоновая техно-сетка -->
+    <canvas id="bg-grid" aria-hidden="true"></canvas>
+
+    <a class="skip-link" href="#main">К содержимому</a>
+
+    <!-- ХЕДЕР -->
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="#top" aria-label="HeatCheck — на главную">
+          <span class="brand-logo" aria-hidden="true">
+            <svg viewBox="0 0 32 32" width="28" height="28">
+              <defs>
+                <linearGradient id="flameOut" x1="16" y1="2" x2="16" y2="31" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#FF7A1A" /><stop offset="1" stop-color="#F53803" />
+                </linearGradient>
+                <linearGradient id="flameIn" x1="16" y1="13" x2="16" y2="30" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#FFE45C" /><stop offset="1" stop-color="#FFC22E" />
+                </linearGradient>
+              </defs>
+              <path d="M18 2.5c1 5 6.5 7.2 6.5 13.7a8.5 8.5 0 0 1-17 0c0-3.7 1.8-6.4 3.9-8.4-.4 3.4 1 5.3 2.6 5.9 2-3.3-1.2-8 4-11.2z" fill="url(#flameOut)" />
+              <path d="M16 15.5c.9 2.7 4 3.7 4 7a4.3 4.3 0 0 1-8.6 0c0-1.9 1-3.4 2.3-4.4-.1 1.6.9 2.4 1.6 2.6 1-1.6-.3-3.4.7-5.2z" fill="url(#flameIn)" />
+            </svg>
+          </span>
+          <span class="brand-word">HEAT<span>CHECK</span></span>
+        </a>
+
+        <nav class="nav" aria-label="Основная навигация">
+          <a href="#features">Возможности</a>
+          <a href="#install">Установка</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+
+        <a class="btn btn-accent header-cta" href="#install">Установить</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- HERO -->
+      <section class="hero" id="top">
+        <div class="container hero-inner reveal">
+          <div class="hero-copy">
+            <span class="pill">FACEIT · CS2</span>
+            <h1 class="hero-title">
+              Вся статистика соперников — <span class="grad">прямо в лобби</span> матча
+            </h1>
+            <p class="hero-sub">
+              HeatCheck показывает расширенную статистику каждого игрока и авторскую
+              метрику <strong>Form Level</strong> — «уровень формы» по последним матчам.
+              Никаких вкладок: всё появляется прямо в комнате матча FACEIT.
+            </p>
+            <div class="hero-cta">
+              <a class="btn btn-accent btn-lg" href="#install">Скачать / Установить</a>
+              <a class="btn btn-ghost btn-lg" href="https://github.com/Angelokkus/heatcheck" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.36 1.09 2.94.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+                GitHub
+              </a>
+            </div>
+            <p class="hero-note">Бесплатно · без трекеров · Chrome · Firefox · Opera · Yandex</p>
+          </div>
+
+          <!-- Мокап бейджа в лобби -->
+          <div class="hero-mock" aria-label="Пример карточки игрока с бейджами HeatCheck">
+            <div class="mock-card">
+              <div class="mock-row">
+                <span class="mock-flag">🇷🇺</span>
+                <span class="mock-avatar" aria-hidden="true"></span>
+                <span class="mock-nick">s1mple</span>
+                <span class="mock-badge up">LVL 7 · Form 9 ▲▲</span>
+                <span class="mock-elo">2100</span>
+                <span class="mock-lvl">7</span>
+              </div>
+              <div class="mock-panel">
+                <div class="mcell"><b>560</b><i>Matches</i></div>
+                <div class="mcell"><b>58%</b><i>Win Rate</i></div>
+                <div class="mcell"><b>1.24</b><i>Rating</i></div>
+                <div class="mcell"><b>1.18</b><i>K/D</i></div>
+                <div class="mcell"><b>91</b><i>ADR</i></div>
+                <div class="mcell wl"><b><span class="w">W</span><span class="w">W</span><span class="l">L</span><span class="w">W</span><span class="w">W</span></b><i>Last 5</i></div>
+              </div>
+              <div class="mock-odds">
+                <span class="cap">ODDS</span>
+                <span class="side fav">62%</span>
+                <span class="track"><span class="fill" style="width:62%"></span></span>
+                <span class="side">38%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ВОЗМОЖНОСТИ -->
+      <section class="section" id="features">
+        <div class="container">
+          <div class="section-head reveal">
+            <h2>Что делает HeatCheck</h2>
+            <p class="section-sub">Четыре причины держать его включённым.</p>
+          </div>
+          <div class="cards features-grid">
+            <article class="card reveal">
+              <span class="card-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5"/><rect x="7" y="11" width="3" height="8" rx="1"/><rect x="12" y="7" width="3" height="12" rx="1"/><rect x="17" y="13" width="3" height="6" rx="1"/></svg>
+              </span>
+              <h3>Статистика прямо в лобби</h3>
+              <p>Уровень, ELO, винрейт, K/D, K/R, рейтинг, ADR и статистика на текущей карте — под каждым игроком обеих команд.</p>
+            </article>
+            <article class="card reveal">
+              <span class="card-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c2-2.96 0-7-1-8 0 3.04-1.77 4.74-3 6-1.23 1.26-2 3.24-2 5a6 6 0 1 0 12 0c0-1.53-1.06-3.94-2-5-1.79 3-2.79 3-4 2z"/></svg>
+              </span>
+              <h3>Form Level — уровень формы</h3>
+              <p>Второй, независимый уровень 1–10 по последним 20 матчам: как игрок играет <em>сейчас</em>, а не по накопленному ELO. Зелёный — в форме, красный — просел.</p>
+            </article>
+            <article class="card reveal">
+              <span class="card-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18"/></svg>
+              </span>
+              <h3>Работает в 4 браузерах</h3>
+              <p>Chrome, Firefox, Opera и Yandex. Одна сборка на Chromium и отдельная на Firefox — одинаковый функционал везде.</p>
+            </article>
+            <article class="card reveal">
+              <span class="card-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+              </span>
+              <h3>Приватность</h3>
+              <p>Только официальный FACEIT Data API с вашим ключом. Никакой аналитики и трекеров — ничего не покидает браузер, кроме запросов к FACEIT.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- УСТАНОВКА -->
+      <section class="section" id="install">
+        <div class="container">
+          <div class="section-head reveal">
+            <h2>Установить</h2>
+            <p class="section-sub">Выберите свой браузер. Расширение бесплатное.</p>
+          </div>
+
+          <div class="cards install-grid" id="install-grid">
+            <!-- Chrome -->
+            <a class="install-card" data-browser="chrome" href="#" target="_blank" rel="noopener">
+              <span class="rec-badge" hidden>Рекомендуем для вас</span>
+              <span class="browser-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C8.21 0 4.831 1.757 2.632 4.501l3.953 6.848A5.454 5.454 0 0 1 12 6.545h10.691A12 12 0 0 0 12 0zM1.931 5.47A11.943 11.943 0 0 0 0 12c0 6.012 4.42 10.991 10.189 11.864l3.953-6.847a5.45 5.45 0 0 1-6.865-2.29zm13.342 2.166a5.446 5.446 0 0 1 1.45 7.09l.002.001h-.002l-5.344 9.257c.206.01.413.016.621.016 6.627 0 12-5.373 12-12 0-1.54-.29-3.011-.818-4.364zM12 16.364a4.364 4.364 0 1 1 0-8.728 4.364 4.364 0 0 1 0 8.728Z"/></svg>
+              </span>
+              <span class="browser-name">Chrome</span>
+              <span class="install-state"></span>
+            </a>
+
+            <!-- Firefox -->
+            <a class="install-card" data-browser="firefox" href="#" target="_blank" rel="noopener">
+              <span class="rec-badge" hidden>Рекомендуем для вас</span>
+              <span class="browser-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.824 7.287c.008 0 .004 0 0 0zm-2.8-1.4c.006 0 .003 0 0 0zm16.754 2.161c-.505-1.215-1.53-2.528-2.333-2.943.654 1.283 1.033 2.57 1.177 3.53l.002.02c-1.314-3.278-3.544-4.6-5.366-7.477-.091-.147-.184-.292-.273-.446a3.545 3.545 0 01-.13-.24 2.118 2.118 0 01-.172-.46.03.03 0 00-.027-.03.038.038 0 00-.021 0l-.006.001a.037.037 0 00-.01.005L15.624 0c-2.585 1.515-3.657 4.168-3.932 5.856a6.197 6.197 0 00-2.305.587.297.297 0 00-.147.37c.057.162.24.24.396.17a5.622 5.622 0 012.008-.523l.067-.005a5.847 5.847 0 011.957.222l.095.03a5.816 5.816 0 01.616.228c.08.036.16.073.238.112l.107.055a5.835 5.835 0 01.368.211 5.953 5.953 0 012.034 2.104c-.62-.437-1.733-.868-2.803-.681 4.183 2.09 3.06 9.292-2.737 9.02a5.164 5.164 0 01-1.513-.292 4.42 4.42 0 01-.538-.232c-1.42-.735-2.593-2.121-2.74-3.806 0 0 .537-2 3.845-2 .357 0 1.38-.998 1.398-1.287-.005-.095-2.029-.9-2.817-1.677-.422-.416-.622-.616-.8-.767a3.47 3.47 0 00-.301-.227 5.388 5.388 0 01-.032-2.842c-1.195.544-2.124 1.403-2.8 2.163h-.006c-.46-.584-.428-2.51-.402-2.913-.006-.025-.343.176-.389.206-.406.29-.787.616-1.136.974-.397.403-.76.839-1.085 1.303a9.816 9.816 0 00-1.562 3.52c-.003.013-.11.487-.19 1.073-.013.09-.026.181-.037.272a7.8 7.8 0 00-.069.667l-.002.034-.023.387-.001.06C.386 18.795 5.593 24 12.016 24c5.752 0 10.527-4.176 11.463-9.661.02-.149.035-.298.052-.448.232-1.994-.025-4.09-.753-5.844z"/></svg>
+              </span>
+              <span class="browser-name">Firefox</span>
+              <span class="install-state"></span>
+            </a>
+
+            <!-- Opera -->
+            <a class="install-card" data-browser="opera" href="#" target="_blank" rel="noopener">
+              <span class="rec-badge" hidden>Рекомендуем для вас</span>
+              <span class="browser-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.051 5.238c-1.328 1.566-2.186 3.883-2.246 6.48v.564c.061 2.598.918 4.912 2.246 6.479 1.721 2.236 4.279 3.654 7.139 3.654 1.756 0 3.4-.537 4.807-1.471C17.879 22.846 15.074 24 12 24c-.192 0-.383-.004-.57-.014C5.064 23.689 0 18.436 0 12 0 5.371 5.373 0 12 0h.045c3.055.012 5.84 1.166 7.953 3.055-1.408-.93-3.051-1.471-4.81-1.471-2.858 0-5.417 1.42-7.14 3.654h.003zM24 12c0 3.556-1.545 6.748-4.002 8.945-3.078 1.5-5.946.451-6.896-.205 3.023-.664 5.307-4.32 5.307-8.74 0-4.422-2.283-8.075-5.307-8.74.949-.654 3.818-1.703 6.896-.205C22.455 5.25 24 8.445 24 12z"/></svg>
+              </span>
+              <span class="browser-name">Opera</span>
+              <span class="install-hint">Ставится из Chrome Web Store</span>
+              <span class="install-state"></span>
+            </a>
+
+            <!-- Yandex -->
+            <a class="install-card" data-browser="yandex" href="#" target="_blank" rel="noopener">
+              <span class="rec-badge" hidden>Рекомендуем для вас</span>
+              <span class="browser-ico ya" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11.2" fill="currentColor"/><text x="12" y="18" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="800" fill="#0A0A0C">Я</text></svg>
+              </span>
+              <span class="browser-name">Yandex</span>
+              <span class="install-hint">Ставится из Chrome Web Store</span>
+              <span class="install-state"></span>
+            </a>
+          </div>
+
+          <p class="install-foot reveal">
+            После установки откройте настройки расширения и вставьте свой ключ
+            FACEIT Data API — как его получить, описано в
+            <a href="#faq">FAQ</a>.
+          </p>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="section" id="faq">
+        <div class="container narrow">
+          <div class="section-head reveal">
+            <h2>Частые вопросы</h2>
+          </div>
+
+          <div class="faq reveal">
+            <details>
+              <summary>Нужен ли ключ FACEIT API и как его получить?</summary>
+              <div class="faq-body">
+                <p>Да. Расширение работает через официальный FACEIT Data API с вашим личным ключом (бесплатным).</p>
+                <ol>
+                  <li>Откройте <a href="https://developers.faceit.com" target="_blank" rel="noopener">developers.faceit.com</a> и войдите под аккаунтом FACEIT.</li>
+                  <li>Создайте приложение → раздел <b>API Keys</b> → создайте ключ типа <b>Server-Side</b>.</li>
+                  <li>Вставьте ключ в настройки HeatCheck (раздел «API и кэш») и нажмите «Проверить ключ».</li>
+                </ol>
+              </div>
+            </details>
+
+            <details>
+              <summary>Безопасно ли это? Какие данные собираются?</summary>
+              <div class="faq-body">
+                <p><b>Никакие.</b> HeatCheck не собирает и не передаёт ваши данные разработчику или третьим лицам. Нет трекеров и аналитики.</p>
+                <p>API-ключ хранится только в вашем браузере и отправляется исключительно на официальный API FACEIT (<code>open.faceit.com</code>) для получения публичной статистики.</p>
+              </div>
+            </details>
+
+            <details>
+              <summary>Что такое Form Level?</summary>
+              <div class="faq-body">
+                <p>Это второй, независимый уровень 1–10, который считается по вашим последним матчам (HLTV-подобный рейтинг + поправка на винрейт). Официальный уровень отражает накопленный ELO за всё время, а Form Level — <b>как игрок играет прямо сейчас</b>.</p>
+                <p>Стрелка на бейдже показывает расхождение: <span class="ok">▲ в форме</span>, = по уровню, <span class="bad">▼ просел</span>.</p>
+              </div>
+            </details>
+
+            <details>
+              <summary>Как установить в Opera и Яндекс.Браузер?</summary>
+              <div class="faq-body">
+                <p>Opera и Yandex Browser умеют ставить расширения из <b>Chrome Web Store</b>. Нажмите карточку своего браузера выше — она ведёт на нужную страницу. При первой установке браузер может попросить подтвердить «Установить расширение из стороннего источника» — это нормально.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ФУТЕР -->
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <span class="brand-word small">HEAT<span>CHECK</span></span>
+          <p class="muted">Расширенная статистика FACEIT (CS2) прямо в лобби.</p>
+        </div>
+        <div class="footer-links">
+          <a href="mailto:angelokkus@gmail.com">angelokkus@gmail.com</a>
+          <a href="https://github.com/Angelokkus/heatcheck" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <p class="muted">© <span id="year">2026</span> HeatCheck. Все права защищены.</p>
+        <p class="disclaimer">Не аффилировано с FACEIT. FACEIT — товарный знак соответствующих правообладателей.</p>
+      </div>
+    </footer>
+
+    <script src="main.js"></script>
+  </body>
+</html>
