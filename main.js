@@ -11,7 +11,7 @@
 //      yandex → используйте ту же ссылку, что и chrome (ставится из Chrome Web Store)
 const LINKS = {
   chrome: '#',
-  firefox: '#',
+  firefox: 'https://addons.mozilla.org/addon/heatcheck-faceit-cs2-stats/',
   opera: '#', // ставится из Chrome Web Store
   yandex: '#', // ставится из Chrome Web Store
 };
